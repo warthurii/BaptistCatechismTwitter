@@ -8,4 +8,4 @@ with open('catechism.json', 'r') as cat:
         q = qa['question']
         a = qa['answer']
         length = len(q) + len(a)
-        print(length)
+        print(len(a))
