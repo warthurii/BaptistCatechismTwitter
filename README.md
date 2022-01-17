@@ -6,7 +6,7 @@ daily. The main source will be the baptist catechism for now but would like to d
 ## Setup
  1. Twitter profile
   - First need a twitter account.
- 2. Then set up a twitter develop accoutn with that account. I recommend getting elevated access to use v1 and v2 endpoints.
+ 2. Then set up a twitter develop account with that account. I recommend getting elevated access to use v1 and v2 endpoints.
  3. Set your api, access, and client keys.
   - I use a shell script (as I am on ubuntu) to set the keys/tokens as environment variables which are called from the python code.
  4. Should be ready run the main program (baptistBot.py)
