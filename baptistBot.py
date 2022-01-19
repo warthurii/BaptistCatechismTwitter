@@ -29,10 +29,10 @@ def getCatechismStatusText():
         a = catechism[num]["answer"]
         number = catechism[num]["number"]
 
-        statusText = f"Q{number}: {q}\nA: {a}"
+        statusText = [f"Q{number}: {q}\nA: {a}"]
 
     if len(statusText) > 280:
-        words = re.split("( )", statusText)
+        words = re.split("( )", statusText[0])
         status = [""]
         i = 0
         length = 276
