@@ -9,9 +9,18 @@ def createTwitterObj():
     API_KEY_SECRET = str(os.getenv("BAPTIST_API_KEY_SECRET"))
     ACCESS_TOKEN = str(os.getenv("BAPTIST_ACCESS_TOKEN"))
     ACCESS_TOKEN_SECRET = str(os.getenv("BAPTIST_ACCESS_TOKEN_SECRET"))
+    BEARER_TOKEN = str(os.getenv("BAPTIST_BEARER_TOKEN"))
 
     auth = tweepy.OAuthHandler(API_KEY, API_KEY_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+
+    # return tweepy.Client(
+    #     bearer_token=BEARER_TOKEN,
+    #     consumer_key=API_KEY,
+    #     consumer_secret=API_KEY_SECRET,
+    #     access_token=ACCESS_TOKEN,
+    #     access_token_secret=ACCESS_TOKEN_SECRET,
+    # )
 
     return tweepy.API(auth)
 
@@ -22,6 +31,9 @@ def getCatechismStatusText():
         nums = json.load(f1)
         num = nums["catechismNum"]
 
+    if num >= 114:
+        return ""
+
     with open("catechism.json", "r") as catechism:
         catechism = json.load(catechism)
 
@@ -31,7 +43,7 @@ def getCatechismStatusText():
 
         statusText = [f"Q{number}: {q}\nA: {a}"]
 
-    if len(statusText) > 280:
+    if len(statusText[0]) > 280:
         words = re.split("( )", statusText[0])
         status = [""]
         i = 0
@@ -40,7 +52,7 @@ def getCatechismStatusText():
             if len(status[i]) + len(str(word)) < length:
                 status[i] += str(word)
             else:
-                status.append(f"...{word}")
+                status.append(f"... {word}")
                 i += 1
                 length = 273
         statusText = status
@@ -52,5 +64,22 @@ def getCatechismStatusText():
     return statusText
 
 
+def tweetQA():
+    status = getCatechismStatusText()
+
+    if status == "":
+        return
+
+    tweeter = createTwitterObj()
+
+    tweet = False
+    for part in status:
+        print(part)
+        print(len(part))
+        tweet = tweeter.update_status(
+            status=part, in_reply_to_status_id=tweet.id if tweet else None
+        )
+
+
 if __name__ == "__main__":
-    print(getCatechismStatusText())
+    tweetQA()
